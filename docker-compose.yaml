@@ -104,7 +104,7 @@ services:
     ports:
       - 80:5173
     environment:
-      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://192.168.178.100:8001}
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://127.0.0.1:8001}
     healthcheck:
       test: ["CMD", "nginx", "-v"]
       interval: 5s
