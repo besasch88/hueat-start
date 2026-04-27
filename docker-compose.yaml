@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-iUkcBQj2o_PpfX*uaXx7}
       POSTGRES_DB: ${POSTGRES_DB:-hueat}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-hueat}"]
+      test: ["CMD-SHELL", "psql -U ${POSTGRES_USER:-hueat} -d ${POSTGRES_DB:-hueat} -c 'SELECT 1' > /dev/null 2>&1"]
       interval: 5s
       timeout: 5s
       retries: 20
