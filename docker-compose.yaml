@@ -21,6 +21,8 @@ services:
   hueat-webapp:
     image: lcastelli88/backend-webapp:latest
     restart: unless-stopped
+    ports:
+      - 8001:8001
     depends_on:
       hueat-database:
         condition: service_healthy
@@ -99,8 +101,10 @@ services:
   hueat-frontend:
     image: lcastelli88/frontend-webapp:latest
     restart: unless-stopped
+    ports:
+      - 80:5173
     environment:
-      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-https://hueat.local}
+      VITE_BACKEND_URL: ${VITE_BACKEND_URL:-http://127.0.0.1:8001}
     healthcheck:
       test: ["CMD", "nginx", "-v"]
       interval: 5s
@@ -109,29 +113,6 @@ services:
     networks:
       - hueat-network
 
-  hueat-caddy:
-    image: caddy:2-alpine
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-    environment:
-      DOMAIN: ${DOMAIN:-hueat.local}
-    depends_on:
-      - hueat-frontend
-      - hueat-webapp
-    networks:
-      - hueat-network
-
 networks:
   hueat-network:
     driver: bridge
-
-volumes:
-  caddy_data:
-  caddy_config:
