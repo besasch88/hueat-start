@@ -1,0 +1,9 @@
+{$DOMAIN} {
+    handle /api/* {
+        reverse_proxy hueat-webapp:8001
+    }
+
+    handle {
+        reverse_proxy hueat-frontend:5173
+    }
+}
